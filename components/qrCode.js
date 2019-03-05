@@ -15,7 +15,7 @@ class QrCode extends Component {
       // Default Value of the TextInput
       valueForQRCode: '',
       // Default value for the QR Code
-      phone: ''
+      inputPhone: ''
     };
   }
   getTextInputValue = () => {
@@ -27,7 +27,7 @@ class QrCode extends Component {
 
   onShare = async () => {
 
-    const value = `Segue link para teste! ${baseUrl}${this.state.valueForQRCode}&phone=${this.state.phone} Acesso o link`
+    const value = `Segue link para teste! ${baseUrl}${this.state.valueForQRCode}&phone=${this.state.inputPhone} Acesso o link`
     alert(value)
     console.log(value)
     Linking.openURL(`whatsapp://send?text=${value}` )
@@ -60,6 +60,13 @@ class QrCode extends Component {
           source={{ uri: `https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${this.state.valueForQRCode}`}}
         />
         <TextInput
+          // Input to get the phone to send QRCode
+          style={[styles.TextInputStyle]}
+          onChangeText={phone => this.setState({ inputPhone: phone })}
+          underlineColorAndroid="transparent"
+          placeholder="Enter phone to send QR Code"
+        />
+        <TextInput
           // Input to get the value to set on QRCode
           style={styles.TextInputStyle}
           onChangeText={text => this.setState({ inputValue: text })}
@@ -89,6 +96,9 @@ const styles = StyleSheet.create({
     margin: 10,
     alignItems: 'center',
     paddingTop: 40,
+  },
+  TextInputPhoneStyle:{
+    marginTop: 10
   },
   TextInputStyle: {
     width: '100%',
