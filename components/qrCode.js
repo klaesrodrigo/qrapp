@@ -63,6 +63,7 @@ class QrCode extends Component {
           // Input to get the phone to send QRCode
           style={[styles.TextInputStyle]}
           onChangeText={phone => this.setState({ inputPhone: phone })}
+          keyboardType = 'numeric'
           underlineColorAndroid="transparent"
           placeholder="Enter phone to send QR Code"
         />
