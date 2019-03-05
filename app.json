@@ -24,6 +24,11 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "br.com.qrcode",
+      "versionCode": 1,
+      "permissions": []
     }
   }
 }

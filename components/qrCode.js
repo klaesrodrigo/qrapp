@@ -1,11 +1,11 @@
 //This is an example code to generate QR code//
 import React, { Component } from 'react';
 //import react in our code.
-import { StyleSheet, View, TextInput, TouchableOpacity, Text, Image, Share, Linking} from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, Image, Share, Linking} from 'react-native'
 
-const teste = 'Rodrigo'
+const baseUrlAxios = 'https://servidor-catraca.herokuapp.com/enviarQRCode'
 
-const baseUrl = 'https%3A%2F%2Fchart.googleapis.com%2Fchart%3Fcht%3Dqr%26chs%3D300x300%26chl%3D'
+const baseUrl = 'https%3A%2F%2Fapi.qrserver.com%2Fv1%2Fcreate-qr-code%2F%3Fsize%3D150x150%26data%3D'
  
 class QrCode extends Component {
   constructor() {
@@ -13,51 +13,45 @@ class QrCode extends Component {
     this.state = {
       inputValue: '',
       // Default Value of the TextInput
-      valueForQRCode: '',
+      valueForQRCode: 'teste',
       // Default value for the QR Code
-      inputPhone: ''
+      inputPhone: '',
+      wasGenerated: false
     };
   }
-  getTextInputValue = () => {
-    // Function to get the value from input
-    // and Setting the value to the QRCode
-    this.setState({ valueForQRCode: this.state.inputValue });
+  getTextInputValue = async () => {
+    const date = new Date()
+    const text = await 'test' + date.getMonth() + date.getFullYear() + date.getHours() + date.getMinutes() +  date.getSeconds()
+
+    await this.setState({ valueForQRCode: text, wasGenerated: true });
     console.log(this.state.valueForQRCode)
   }
 
   onShare = async () => {
 
-    const value = `Segue link para teste! ${baseUrl}${this.state.valueForQRCode}&phone=${this.state.inputPhone} Acesso o link`
-    alert(value)
-    console.log(value)
+    const value = `Segue link para teste! ${baseUrl}${this.state.valueForQRCode} Acesso o link`
+    const results = await fetch(baseUrlAxios, {
+      method: 'POST',headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        url: this.state.valueForQRCode
+      }),
+    })
     Linking.openURL(`whatsapp://send?text=${value}` )
-    
-
-    // try {
-    //   const result = await Share.share({
-    //     message:
-    //       value,
-    //   })
-
-    //   if (result.action === Share.sharedAction) {
-    //     if (result.activityType) {
-    //       // shared with activity type of result.activityType
-    //     } else {
-    //       // shared
-    //     }
-    //   } else if (result.action === Share.dismissedAction) {
-    //     // dismissed
-    //   }
-    // } catch (error) {
-    //   alert(error.message);
-    // }
+  
   }
   render() {
     return (
       <View style={styles.MainContainer}>
         <Image
-          style={{ width: 350, height: 350 }}
-          source={{ uri: `https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${this.state.valueForQRCode}`}}
+          style={styles.qrCode}
+          source={{ uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${this.state.valueForQRCode}`}}
         />
         <TextInput
           // Input to get the phone to send QRCode
@@ -67,25 +61,20 @@ class QrCode extends Component {
           underlineColorAndroid="transparent"
           placeholder="Enter phone to send QR Code"
         />
-        <TextInput
-          // Input to get the value to set on QRCode
-          style={styles.TextInputStyle}
-          onChangeText={text => this.setState({ inputValue: text })}
-          underlineColorAndroid="transparent"
-          placeholder="Enter text to Generate QR Code"
-        />
         <TouchableOpacity
           onPress={this.getTextInputValue}
           activeOpacity={0.7}
           style={styles.button}>
           <Text style={styles.TextStyle}> Generate QR Code </Text>
         </TouchableOpacity>
+        {this.state.wasGenerated ?
         <TouchableOpacity
           onPress={this.onShare}
           activeOpacity={0.7}
           style={styles.button}>
           <Text style={styles.TextStyle}> Compartilhar </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> 
+        : null}
       </View>
     );
   }
@@ -101,7 +90,7 @@ const styles = StyleSheet.create({
   TextInputStyle: {
     width: '100%',
     height: 40,
-    marginTop: 10,
+    margin: 10,
     borderWidth: 1,
     textAlign: 'center',
     paddingLeft: 5,
@@ -120,4 +109,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
   },
+  qrCode: {
+    margin:5,
+    width: 150,
+    height: 150
+  }
 });
