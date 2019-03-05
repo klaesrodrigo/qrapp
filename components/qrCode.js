@@ -96,15 +96,12 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 10,
     alignItems: 'center',
-    paddingTop: 40,
-  },
-  TextInputPhoneStyle:{
-    marginTop: 10
+    paddingTop: 30,
   },
   TextInputStyle: {
     width: '100%',
     height: 40,
-    marginTop: 20,
+    marginTop: 10,
     borderWidth: 1,
     textAlign: 'center',
     paddingLeft: 5,
@@ -112,11 +109,11 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    paddingTop: 8,
-    marginTop: 10,
-    paddingBottom: 8,
+    paddingTop: 5,
+    marginTop: 5,
+    paddingBottom: 5,
     backgroundColor: '#F44336',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   TextStyle: {
     color: '#fff',
