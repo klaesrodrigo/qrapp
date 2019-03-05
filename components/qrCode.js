@@ -5,7 +5,7 @@ import { StyleSheet, View, TextInput, TouchableOpacity, Text, Image, Share, Link
 
 const teste = 'Rodrigo'
 
-const baseUrl = 'chart.googleapis.com/chart?cht=qr&chs=300x300&chl='
+const baseUrl = 'https%3A%2F%2Fchart.googleapis.com%2Fchart%3Fcht%3Dqr%26chs%3D300x300%26chl%3D'
  
 class QrCode extends Component {
   constructor() {
@@ -15,6 +15,7 @@ class QrCode extends Component {
       // Default Value of the TextInput
       valueForQRCode: '',
       // Default value for the QR Code
+      phone: ''
     };
   }
   getTextInputValue = () => {
@@ -26,10 +27,10 @@ class QrCode extends Component {
 
   onShare = async () => {
 
-    const value = baseUrl + this.state.valueForQRCode
+    const value = `Segue link para teste! ${baseUrl}${this.state.valueForQRCode}&phone=${this.state.phone} Acesso o link`
     alert(value)
     console.log(value)
-    Linking.openURL(`whatsapp://send?text=chart.googleapis.com/chart?cht=qr&chs=300x300&chl=` )
+    Linking.openURL(`whatsapp://send?text=${value}` )
     
 
     // try {
