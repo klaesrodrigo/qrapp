@@ -15,34 +15,43 @@ class QrCode extends Component {
       // Default Value of the TextInput
       valueForQRCode: 'teste',
       // Default value for the QR Code
-      inputPhone: '',
-      wasGenerated: false
+      phoneNumber: '',
+      wasGenerated: false,
+      wasSaved: false,
     };
   }
   getTextInputValue = async () => {
     const date = new Date()
-    const text = await 'test' + date.getMonth() + date.getFullYear() + date.getHours() + date.getMinutes() +  date.getSeconds()
+    const text = await 'mob' + date.getMonth() +
+                       date.getFullYear() + date.getHours() +
+                       date.getMinutes() +  date.getSeconds()
 
-    await this.setState({ valueForQRCode: text, wasGenerated: true });
+    await this.setState({ valueForQRCode: text, wasGenerated: true, wasSaved: true });
     console.log(this.state.valueForQRCode)
   }
 
   onShare = async () => {
 
-    const value = `Segue link para teste! ${baseUrl}${this.state.valueForQRCode} Acesso o link`
-    const results = await fetch(baseUrlAxios, {
-      method: 'POST',headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        url: this.state.valueForQRCode
-      }),
-    })
+    const value = `${baseUrl}${this.state.valueForQRCode}&phone=55${this.state.phoneNumber}`
+    
+
+    if(!this.state.wasSaved){
+      const results = await fetch(baseUrlAxios, {
+        method: 'POST',headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: this.state.valueForQRCode
+        }),
+      })
+      this.setState({wasSaved: true})
+    }
+
     Linking.openURL(`whatsapp://send?text=${value}` )
   
   }
@@ -51,12 +60,13 @@ class QrCode extends Component {
       <View style={styles.MainContainer}>
         <Image
           style={styles.qrCode}
-          source={{ uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${this.state.valueForQRCode}`}}
+          source={
+            { uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${this.state.valueForQRCode}`}}
         />
         <TextInput
           // Input to get the phone to send QRCode
           style={[styles.TextInputStyle]}
-          onChangeText={phone => this.setState({ inputPhone: phone })}
+          onChangeText={phone => this.setState({ phoneNumber: phone })}
           keyboardType = 'numeric'
           underlineColorAndroid="transparent"
           placeholder="Enter phone to send QR Code"
@@ -65,7 +75,7 @@ class QrCode extends Component {
           onPress={this.getTextInputValue}
           activeOpacity={0.7}
           style={styles.button}>
-          <Text style={styles.TextStyle}> Generate QR Code </Text>
+          <Text style={styles.TextStyle}> Generate QR Code</Text>
         </TouchableOpacity>
         {this.state.wasGenerated ?
         <TouchableOpacity
@@ -85,7 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 10,
     alignItems: 'center',
-    paddingTop: 30,
+    paddingTop: 30
   },
   TextInputStyle: {
     width: '100%',
@@ -111,7 +121,7 @@ const styles = StyleSheet.create({
   },
   qrCode: {
     margin:5,
-    width: 150,
-    height: 150
+    width: 250,
+    height: 250
   }
 });
