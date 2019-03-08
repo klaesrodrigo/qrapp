@@ -1,6 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
 import QrCode from './components/qrCode'
+import optionPerson from './components/optionPerson'
+import Form from './components/form';
 // import Form from './components/form'
 
 export default class App extends React.Component {
