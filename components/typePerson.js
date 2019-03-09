@@ -36,9 +36,9 @@ onPressButton = async () => {
       payload = item["value"]
     }
   })
-  await AsyncStorage.setItem('teste',payload)
+  await AsyncStorage.setItem('guest_type',payload)
   
-  navigate('QrCode')
+  navigate('Form')
 }
 
   render() {
@@ -74,11 +74,11 @@ onPressButton = async () => {
 const styles = StyleSheet.create({
   MainContainer: {
     flex: 1,
-    marginTop: 80,
+    marginTop: 30,
   },
   Image: {
     alignItems: 'center',
-    marginBottom: 60,
+    marginBottom: 30,
     justifyContent: 'center',
   },
   Title: {

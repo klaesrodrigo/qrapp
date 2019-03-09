@@ -14,33 +14,39 @@ class QrCode extends Component {
       inputValue: '',
       valueForQRCode: 'teste',
       typeService: 0,
-      name: 'default',
-      email: 'default@mail',
+      name: '',
+      email: '',
       phoneNumber: '',      
       wasGenerated: false,
       wasSaved: false,
       isLoading: false,
     };
     this.getData()
+    // this.getValue()
   }
 
-  getData = async () => {console.log('Oi: ' + await AsyncStorage.getItem('teste'))}
+  getData = async () => {
+    this.setState({
+        name: await AsyncStorage.getItem('name'),
+        phoneNumber: await AsyncStorage.getItem('phone'),
+        email: await AsyncStorage.getItem('email'),
+        typeService: await AsyncStorage.getItem('guest_type') 
+    })
+  }
   getTextInputValue = async () => {
     const date = new Date()
     const text = await 'mob' + date.getMonth() +
                        date.getFullYear() + date.getHours() +
                        date.getMinutes() +  date.getSeconds()
 
-    await this.setState({ valueForQRCode: text, wasGenerated: true, wasSaved: true });
-
-    console.log(this.state.valueForQRCode)
+    await this.setState({ valueForQRCode: text, wasGenerated: true, wasSaved: false });
   }
 
   onShare = async () => {
 
     const value = `${baseUrl}${this.state.valueForQRCode}`
-    
-
+    this.setState({isLoading: true})
+    try{
     if(!this.state.wasSaved){
       const results = await fetch(baseUrlAxios, {
         method: 'POST',headers: {
@@ -53,20 +59,22 @@ class QrCode extends Component {
         },
         body: JSON.stringify({
           url: this.state.valueForQRCode,
-          guest_type: 0,
-          guest_name: "Rodrigo",
-          guest_email: "matheus@matheus.com.br",
-          guest_fone: "(53)999022222"
+          guest_type: this.state.typeService,
+          guest_name: this.state.name,
+          guest_email: this.state.email,
+          guest_fone: this.state.phoneNumber
         }),
       })
-      this.setState({wasSaved: true})
+      console.log(results)
+      this.setState({wasSaved: true, isLoading: false})      
     }
+    Linking.openURL(`whatsapp://send?text=${value}&phone=55${this.state.phoneNumber}` )
+  } catch(err){
+    console.log(err)
+  }
+    
 
-    if(this.state.phoneNumber === ''){
-      Linking.openURL(`whatsapp://send?text=${value}` )
-    } else {
-      Linking.openURL(`whatsapp://send?text=${value}&phone=55${this.state.phoneNumber}` )
-    }
+    
   
   }
   render() {
@@ -88,8 +96,9 @@ class QrCode extends Component {
         <TouchableOpacity
           onPress={this.onShare}
           activeOpacity={0.7}
-          style={styles.button}>
-          <Text style={styles.TextStyle}> Compartilhar </Text>
+          style={styles.button}
+          disabled={this.state.isLoading}>
+          <Text style={styles.TextStyle}> {this.state.isLoading ? 'Aguarde...' : 'Compartilhar'} </Text>
         </TouchableOpacity> 
         : null}
         </View>
