@@ -90,9 +90,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDDDDD',
     padding: 10,
     marginTop: 30,
-    marginLeft: 75,
-    marginRight: 75,
-    borderRadius: 20
+    borderRadius: 20,
+    width: 200
   },
   TextTouchableOpacity: {
     fontSize: 18,
