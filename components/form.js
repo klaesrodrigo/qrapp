@@ -1,89 +1,129 @@
-import * as React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
-import { TextInput  } from 'react-native-paper'
+import React, { Component } from 'react';
+import { StyleSheet, View, Button, Text, TouchableOpacity } from 'react-native';
+import t from 'tcomb-form-native';
 import RadioGroup from 'react-native-radio-buttons-group'
-import { Button } from 'react-native-elements'
 
 
+const Form = t.form.Form;
 
-export default class Form extends React.Component {
+
+const User = t.struct({
+  name: t.String,
+  email: t.String,
+  phone: t.Number,
+  
+});
+
+const formStyles = {
+  ...Form.stylesheet,
+  formGroup: {
+    normal: {
+      marginBottom: 10,
+    },
+  },
+  controlLabel: {
+    normal: {
+      color: 'gray',
+      fontSize: 18,
+      marginBottom: 7,
+      fontWeight: '600',
+    },
+    // the style applied when a validation error occours
+    error: {
+      color: 'red',
+      fontSize: 18,
+      marginBottom: 7,
+      fontWeight: '600',
+    },
+  },
+};
+
+const options = {
+  order: ['name', 'email', 'phone'],
+  fields: {
+    name: {
+      label: 'Nome do visitante',
+      placeholder: 'Nome completo',
+      error: "Campo obrigatório",
+    },
+    email: {
+      label: 'Email do visitante',
+      placeholder: 'email@mail.com',
+      error: "Campo obrigatório",
+    },
+    phone: {
+      label: 'Telefone do visitante',
+      placeholder: '(XX) XX XXXXX XXXX',
+      error: "Campo obrigatório",
+    }
+  },
+  stylesheet: formStyles,
+};
+
+export default class Formulario extends Component {
+  
+  handleSubmit = () => {
+    const value = this._form.getValue();
+    console.log('value: ', value);
+  };
+
   state = {
-    nome: '',
-    email: '',
-    phone: '',
     data: [
       {
           label: 'WhatsApp',
       }
-    ]
+    ],
   };
 
-  onPress = data => this.setState({ data });
-
-  render(){
-
+  render() {
     return (
-      <View style={styles.Container}>
-        <TextInput style={styles.TextInput}
-          label='Nome do visitante'
-          placeholder='Nome Completo'
-          value={this.state.text}
-          onChangeText={nome => this.setState({ nome })}
-        />
-        <TextInput style={styles.TextInput}
-          label='Email do visitante'
-          placeholder='email@email.com'
-          value={this.state.text}
-          onChangeText={email => this.setState({ email })}
-        />
-        <TextInput style={styles.TextInput}
-          label='Telefone celular do visitante'
-          placeholder='(DDD) XXXXX XXXX'
-          value={this.state.text}
-          onChangeText={phone => this.setState({ phone })}
-        />
+      <View style={styles.container}>
+        <Form ref={c => (this._form = c)} type={User} options={options} />
+
         <View style={styles.ViewRadioButton}>
-          <Text style={styles.TextRadioButton}>Compartilhar via:</Text>
+          <Text style={styles.TextRadioButton}>Enviar convite via:</Text>
           <RadioGroup style={styles.RadioButton} radioButtons={this.state.data} onPress={this.onPress} />
-
         </View>
-
-
-        <Button style={{ color: '#000' }}
-          title="Confirma"
-        />
-
+       
+        <View style={styles.ViewButtom}>
+          <TouchableOpacity
+           style={styles.Button}
+           onPress={this.handleSubmit}>
+            <Text style={styles.TextTouchableOpacity}> Confirma </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  Container: {
-    flex: 1,
-    marginTop: 100
+  container: {
+    marginTop: 50,
+    padding: 20,
+    backgroundColor: '#ffffff',
   },
-  TextInput: {
-    marginBottom: 20,
-    marginLeft: 5,
-    marginRight: 5,
-    backgroundColor: 'transparent'
-  },
-  ViewRadioButton:{
-    flex: 1,
-    marginTop: 20
-  },
-  TextRadioButton:{
-    fontSize: 20,
-    textAlign: 'center'
-  },
-  RadioButton: {
-    justifyContent: 'flex-start',
+  ViewRadioButton: {
+    marginTop: 20,
     alignItems: 'flex-start'
+  },
+  TextRadioButton: {
+    fontSize: 18,
   }, 
+  ViewButtom: {
+    alignItems: 'center',
+  },
   Button: {
-    marginBottom: 20,
-    width: 50,
-    color: '#000'
-  }
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    marginTop: 50,
+    borderRadius: 20,
+    width: 200,
+  },
+  TextTouchableOpacity: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    
+  },
 });
