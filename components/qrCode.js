@@ -1,7 +1,7 @@
 //This is an example code to generate QR code//
 import React, { Component } from 'react';
 //import react in our code.
-import { StyleSheet, View, TextInput, TouchableOpacity, Text, Image, Share, Linking} from 'react-native'
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, Image, Share, Linking, AsyncStorage} from 'react-native'
 
 const baseUrlAxios = 'https://servidor-catraca.herokuapp.com/enviarQRCode'
 
@@ -12,14 +12,19 @@ class QrCode extends Component {
     super();
     this.state = {
       inputValue: '',
-      // Default Value of the TextInput
       valueForQRCode: 'teste',
-      // Default value for the QR Code
-      phoneNumber: '',
+      typeService: 0,
+      name: 'default',
+      email: 'default@mail',
+      phoneNumber: '',      
       wasGenerated: false,
       wasSaved: false,
+      isLoading: false,
     };
+    this.getData()
   }
+
+  getData = async () => {console.log('Oi: ' + await AsyncStorage.getItem('teste'))}
   getTextInputValue = async () => {
     const date = new Date()
     const text = await 'mob' + date.getMonth() +
@@ -27,12 +32,13 @@ class QrCode extends Component {
                        date.getMinutes() +  date.getSeconds()
 
     await this.setState({ valueForQRCode: text, wasGenerated: true, wasSaved: true });
+
     console.log(this.state.valueForQRCode)
   }
 
   onShare = async () => {
 
-    const value = `${baseUrl}${this.state.valueForQRCode}&phone=55${this.state.phoneNumber}`
+    const value = `${baseUrl}${this.state.valueForQRCode}`
     
 
     if(!this.state.wasSaved){
@@ -46,30 +52,31 @@ class QrCode extends Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          url: this.state.valueForQRCode
+          url: this.state.valueForQRCode,
+          guest_type: 0,
+          guest_name: "Rodrigo",
+          guest_email: "matheus@matheus.com.br",
+          guest_fone: "(53)999022222"
         }),
       })
       this.setState({wasSaved: true})
     }
 
-    Linking.openURL(`whatsapp://send?text=${value}` )
+    if(this.state.phoneNumber === ''){
+      Linking.openURL(`whatsapp://send?text=${value}` )
+    } else {
+      Linking.openURL(`whatsapp://send?text=${value}&phone=55${this.state.phoneNumber}` )
+    }
   
   }
   render() {
     return (
-      <View style={styles.MainContainer}>
+        <View style={styles.MainContainer}>
         <Image
           style={styles.qrCode}
           source={
-            { uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${this.state.valueForQRCode}`}}
-        />
-        <TextInput
-          // Input to get the phone to send QRCode
-          style={[styles.TextInputStyle]}
-          onChangeText={phone => this.setState({ phoneNumber: phone })}
-          keyboardType = 'numeric'
-          underlineColorAndroid="transparent"
-          placeholder="Enter phone to send QR Code"
+            { uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${this.state.valueForQRCode}`
+            }}
         />
         <TouchableOpacity
           onPress={this.getTextInputValue}
@@ -85,7 +92,7 @@ class QrCode extends Component {
           <Text style={styles.TextStyle}> Compartilhar </Text>
         </TouchableOpacity> 
         : null}
-      </View>
+        </View>
     );
   }
 }
@@ -107,21 +114,22 @@ const styles = StyleSheet.create({
     paddingRight: 5
   },
   button: {
-    width: '100%',
-    paddingTop: 5,
-    marginTop: 5,
-    paddingBottom: 5,
-    backgroundColor: '#F44336',
-    marginBottom: 10,
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    marginTop: 30,
+    marginLeft: 75,
+    marginRight: 75,
+    borderRadius: 20
   },
   TextStyle: {
-    color: '#fff',
-    textAlign: 'center',
     fontSize: 18,
+    fontWeight: 'bold'
   },
   qrCode: {
     margin:5,
     width: 250,
     height: 250
   }
+  
 });

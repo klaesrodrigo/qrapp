@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity, AsyncStorage } from 'react-native'
 import RadioGroup from 'react-native-radio-buttons-group';
+import { Item } from '../node_modules/react-native/Libraries/Components/Picker/Picker';
 
 
 export default class TypePerson extends Component {
@@ -8,27 +9,40 @@ export default class TypePerson extends Component {
     data: [
         {
             label: 'Visitante',
+            value: '0',
+            selected: true
         },
         {
             label: 'Prestador de Serviços',
+            value: '1',
+            selected: false
         },
         { 
             label: 'Múltiplos visitantes (Festas e eventos)',
+            value: '2',
+            selected: false
         }
     ],
-};
+}
 
 // update state radio button
 onPress = data => this.setState({ data });
 
 // state button
-onPressButton = () => {
-  this.setState({
-    
+onPressButton = async () => {
+  const {navigate} = this.props.navigation
+  this.state.data.some((item, key, array) => {
+    if(item["selected"]){
+      payload = item["value"]
+    }
   })
+  await AsyncStorage.setItem('teste',payload)
+  
+  navigate('QrCode')
 }
 
   render() {
+
     return (
       <View style={styles.MainContainer}>
         
@@ -47,7 +61,7 @@ onPressButton = () => {
 
         <TouchableOpacity
          style={styles.Button}
-         onPress={this.onPressButton}
+         onPress={() => this.onPressButton()}
         >
           <Text style={styles.TextTouchableOpacity}> Próximo </Text>
        </TouchableOpacity>
