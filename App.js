@@ -1,13 +1,13 @@
 import React from 'react'
 import QrCode from './components/qrCode'
 import TypePerson from './components/typePerson'
-import Form from './components/form'
+import Formulario from './components/form'
 // import Form from './components/form'
 import { createStackNavigator, createAppContainer } from 'react-navigation'
 
 const MainNavigator = createStackNavigator({
   Home: { screen: TypePerson },
-  Form: { screen: Form },
+  Form: { screen: Formulario },
   QrCode: { screen: QrCode }
 })
 

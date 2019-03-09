@@ -58,13 +58,14 @@ onPressButton = async () => {
         <View>
           <RadioGroup radioButtons={this.state.data} onPress={this.onPress} />
         </View>
-
-        <TouchableOpacity
-         style={styles.Button}
-         onPress={() => this.onPressButton()}
-        >
-          <Text style={styles.TextTouchableOpacity}> Próximo </Text>
-       </TouchableOpacity>
+        <View style={styles.ViewButton}>
+          <TouchableOpacity
+            style={styles.Button}
+            onPress={() => this.onPressButton()}
+          >
+             <Text style={styles.TextTouchableOpacity}> Próximo </Text>
+          </TouchableOpacity>
+        </View>
      </View>
     );
   }
@@ -84,6 +85,9 @@ const styles = StyleSheet.create({
     fontSize: 26,
     textAlign: 'center',
     marginBottom: 30
+  },
+  ViewButton: {
+    alignItems: 'center',
   },
   Button: {
     alignItems: 'center',
