@@ -113,8 +113,8 @@ const formStyles = {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
-    padding: 20,
+    marginTop: 10,
+    padding: 10,
     backgroundColor: '#ffffff',
   },
   ViewRadioButton: {
