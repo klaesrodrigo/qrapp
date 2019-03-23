@@ -43,7 +43,7 @@ class QrCode extends Component {
   }
 
   onShare = async () => {
-
+    const {navigate} = this.props.navigation
     const value = `${baseUrl}${this.state.valueForQRCode}`
     this.setState({isLoading: true})
     try{
@@ -68,7 +68,11 @@ class QrCode extends Component {
       console.log(results)
       this.setState({wasSaved: true, isLoading: false})      
     }
+
     Linking.openURL(`whatsapp://send?text=${value}&phone=55${this.state.phoneNumber}` )
+    navigate('Home')
+
+
   } catch(err){
     console.log(err)
   }
@@ -85,6 +89,7 @@ class QrCode extends Component {
           source={
             { uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${this.state.valueForQRCode}`
             }}
+            
         />
         <TouchableOpacity
           onPress={this.getTextInputValue}
