@@ -90,7 +90,7 @@ class QrCode extends Component {
           onPress={this.getTextInputValue}
           activeOpacity={0.7}
           style={styles.button}>
-          <Text style={styles.TextStyle}> Generate QR Code</Text>
+          <Text style={styles.TextStyle}> Gerar</Text>
         </TouchableOpacity>
         {this.state.wasGenerated ?
         <TouchableOpacity
@@ -127,13 +127,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDDDDD',
     padding: 10,
     marginTop: 30,
-    marginLeft: 75,
-    marginRight: 75,
     borderRadius: 20
   },
   TextStyle: {
     fontSize: 18,
-    fontWeight: 'bold'
+    paddingLeft: 10,
+    paddingRight: 10,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    width: 'auto'
   },
   qrCode: {
     margin:5,
