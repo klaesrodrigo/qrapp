@@ -5,7 +5,7 @@ import { StyleSheet, View, TextInput, TouchableOpacity, Text, Image, Share, Link
 
 const baseUrlAxios = 'https://servidor-catraca.herokuapp.com/enviarQRCode'
 
-const baseUrl = 'https%3A%2F%2Fapi.qrserver.com%2Fv1%2Fcreate-qr-code%2F%3Fsize%3D150x150%26data%3D'
+const baseUrl = 'https%3A%2F%2Fapi.qrserver.com%2Fv1%2Fcreate-qr-code%2F%3Fsize%3D250x250%26data%3D'
  
 class QrCode extends Component {
   constructor() {
@@ -84,6 +84,7 @@ class QrCode extends Component {
   render() {
     return (
         <View style={styles.MainContainer}>
+        { this.state.wasGenerated ?
         <Image
           style={styles.qrCode}
           source={
@@ -91,6 +92,7 @@ class QrCode extends Component {
             }}
             
         />
+        : null  }
         <TouchableOpacity
           onPress={this.getTextInputValue}
           activeOpacity={0.7}
