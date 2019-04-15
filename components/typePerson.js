@@ -48,7 +48,7 @@ onPressButton = async () => {
 
         <View style={styles.Image}>
           <Image 
-            style={{width: 200, height: 200}}
+            style={{width: 180, height: 180}}
             source={ require('../assets/Smartway.jpg')}
           />
         </View>
@@ -74,11 +74,11 @@ onPressButton = async () => {
 const styles = StyleSheet.create({
   MainContainer: {
     flex: 1,
-    marginTop: 15,
+    marginTop: 10,
   },
   Image: {
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 5,
     justifyContent: 'center',
   },
   Title: {
