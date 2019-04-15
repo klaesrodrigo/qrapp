@@ -45,11 +45,11 @@ onPressButton = async () => {
 
     return (
       <View style={styles.MainContainer}>
-        
+
         <View style={styles.Image}>
           <Image 
-            style={{width: 100, height: 100}}
-            source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
+            style={{width: 200, height: 200}}
+            source={ require('../assets/Smartway.jpg')}
           />
         </View>
 
@@ -74,11 +74,11 @@ onPressButton = async () => {
 const styles = StyleSheet.create({
   MainContainer: {
     flex: 1,
-    marginTop: 30,
+    marginTop: 15,
   },
   Image: {
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 15,
     justifyContent: 'center',
   },
   Title: {
